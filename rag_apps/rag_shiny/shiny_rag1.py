@@ -1,8 +1,8 @@
+import sys
+
+from pyprojroot import here
 from shiny import reactive
 from shiny.express import input, render, ui
-
-import sys
-from pyprojroot import here
 
 sys.path.append(str(here()))
 from rag_fns.rag import do_rag
@@ -15,20 +15,24 @@ ui.page_opts(
 )
 
 
-ui.input_text(id='query1', label='What question do you want to ask?', placeholder="What is the tidyverse?")
-ui.input_action_button("run_rag", "Submit!") 
-
+ui.input_text(
+    id="query1", label="What question do you want to ask?", placeholder="What is the tidyverse?"
+)
+ui.input_action_button("run_rag", "Submit!")
 
 
 rag_answer = reactive.value("")
 list_retrieved_docs = reactive.value([])
 n_prompt_tokens = reactive.value(0)
 
+
 @reactive.effect
 @reactive.event(input.run_rag)
 def do_rag_shiny():
-    response, retrieved_docs, prompt_tokens = do_rag(user_input=input.query1(), n_results=3, stream=False)
-    
+    response, retrieved_docs, prompt_tokens = do_rag(
+        user_input=input.query1(), n_results=3, stream=False
+    )
+
     rag_answer.set(response)
     list_retrieved_docs.set(retrieved_docs)
     n_prompt_tokens.set(prompt_tokens)
@@ -42,6 +46,7 @@ def render_response():
     ans = rag_answer()
     # return ans
     return ui.markdown(ans)
+
 
 @render.ui
 def create_video_html():
@@ -91,13 +96,16 @@ def create_video_html():
     html += "</div>"
     return ui.HTML(html)
 
+
 # @render.text
 # @render.express
 @render.ui
 def cost_words():
     # return input.query1()
     completion_tokens = calc_n_tokens(rag_answer())
-    cost_cents = calc_cost(prompt_tokens=int(n_prompt_tokens()), completion_tokens=completion_tokens)
+    cost_cents = calc_cost(
+        prompt_tokens=int(n_prompt_tokens()), completion_tokens=completion_tokens
+    )
     text_out = f"This cost approximately {cost_cents:.01f}¢"
     if cost_cents:
         # return text_out

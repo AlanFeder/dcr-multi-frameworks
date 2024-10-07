@@ -108,8 +108,10 @@ def do_1_query(messages1: list[dict[str, str]], gen_client: OpenAI, stream: bool
 
     return response1
 
+
 def text_from_response_static(response1) -> str:
     return response1.choices[0].message.content
+
 
 def text_from_response_stream(response1: Stream):
     for chunk in response1:
@@ -119,8 +121,8 @@ def text_from_response_stream(response1: Stream):
 
 
 def do_generation(
-    query1: str, keep_texts: list[dict[str, Any]], gen_client: OpenAI
-, stream: bool = False):
+    query1: str, keep_texts: list[dict[str, Any]], gen_client: OpenAI, stream: bool = False
+):
     """
     Generate the chatbot response using the specified generation client.
 

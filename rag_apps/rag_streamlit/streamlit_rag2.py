@@ -10,6 +10,7 @@ sys.path.append(str(here()))
 from rag_fns.rag import do_rag
 from rag_utils.rag_utils import calc_cost, calc_n_tokens
 
+
 def show_response(response, to_stream: bool) -> str:
     if to_stream:
         text_out = st.write_stream(response)
@@ -18,6 +19,7 @@ def show_response(response, to_stream: bool) -> str:
         text_out = response
 
     return text_out
+
 
 def run_app():
 
@@ -39,7 +41,9 @@ def run_app():
             if 1 == 1:
                 to_stream = True
                 n_results = 3
-                response, retrieved_docs, prompt_tokens = do_rag(user_input, stream=to_stream, n_results=n_results)
+                response, retrieved_docs, prompt_tokens = do_rag(
+                    user_input, stream=to_stream, n_results=n_results
+                )
                 # Display the response
                 text_out = show_response(response, to_stream)
                 st.divider()
@@ -62,7 +66,9 @@ def run_app():
                         vid_speaker = vid_info["Speaker"]
                         sim_score = 100 * vid_info["score"]
                         vid_url = vid_info["VideoURL"]
-                        st.markdown(f"**{vid_title}**\n\n*{vid_speaker}*\n\nYear: {vid_info['Year']}")
+                        st.markdown(
+                            f"**{vid_title}**\n\n*{vid_speaker}*\n\nYear: {vid_info['Year']}"
+                        )
                         st.caption(f"Similarity Score: {sim_score:.0f}/100")
                         st.video(vid_url)
                         with st.expander(label="Transcript", expanded=False):

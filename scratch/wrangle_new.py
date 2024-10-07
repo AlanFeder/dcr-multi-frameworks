@@ -1,10 +1,12 @@
-import pickle
-import pandas as pd
-import numpy as np
-from openai import OpenAI
-from dotenv import load_dotenv
-from pyprojroot import here
 import os
+import pickle
+
+import numpy as np
+import pandas as pd
+from dotenv import load_dotenv
+from openai import OpenAI
+from pyprojroot import here
+
 load_dotenv()
 
 with open(
@@ -49,6 +51,7 @@ with open(here()/'data'/'interim'/'talk_ids.txt', 'w') as f:
     f.writelines([f"{k}\n" for k in all_keys])
 
 import json
+
 with open(here()/'data'/'interim'/'talk_info.json', 'w') as f:
     json.dump(dcr_info2, f)
 

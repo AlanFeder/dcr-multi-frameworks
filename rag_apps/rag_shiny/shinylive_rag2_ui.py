@@ -1,6 +1,4 @@
-from shiny.express import ui, input
-
-
+from shiny.express import input, ui
 from shinylive_rag_fns import do_rag
 
 ui.page_opts(
@@ -11,9 +9,9 @@ ui.page_opts(
 
 # with ui.layout_sidebar():
 with ui.sidebar():
-# @render.code
-# def get_oai_api_key():
-    ui.input_password(id='oai_api_key', label="Put your OpenAI API Key here:")
+    # @render.code
+    # def get_oai_api_key():
+    ui.input_password(id="oai_api_key", label="Put your OpenAI API Key here:")
 
 
 # Create a chat instance and display it

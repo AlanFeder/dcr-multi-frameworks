@@ -1,6 +1,6 @@
+import io
 import json
 import pickle
-import io
 
 import numpy as np
 import requests
@@ -22,13 +22,11 @@ def import_data() -> tuple[list[str], np.ndarray, dict]:
     # Load the .pkl file into a Python object
     data2load = pickle.load(io.BytesIO(response.content))
 
-
     talk_ids = data2load["talk_ids"]
     embeds = data2load["embeds"]
     talk_info = data2load["talk_info"]
 
     return talk_ids, embeds, talk_info
-
 
 
 def do_1_embed(lt: str, oai_api_key: str) -> np.ndarray:
@@ -163,9 +161,7 @@ def do_retrieval(
         sorted_vids = do_sort(embed_q=arr_q, embed_talks=embeds, list_talk_ids=talk_ids)
 
         # Limit the retrieved documents based on a score threshold
-        keep_texts = limit_docs(
-            sorted_vids=sorted_vids, talk_info=talk_info, n_results=n_results
-        )
+        keep_texts = limit_docs(sorted_vids=sorted_vids, talk_info=talk_info, n_results=n_results)
 
         return keep_texts
     except Exception as e:
@@ -225,9 +221,7 @@ Question: {question}
         for i, tx_val in enumerate(keep_texts):
             text0 = tx_val["text"]
             speaker_name = tx_val["Speaker"]
-            list_strs.append(
-                f"Video Transcript {i+1}\nSpeaker: {speaker_name}\n{text0}"
-            )
+            list_strs.append(f"Video Transcript {i+1}\nSpeaker: {speaker_name}\n{text0}")
         user_prompt += "\n-------\n".join(list_strs)
         user_prompt += """
 ==============================
@@ -307,9 +301,7 @@ def do_1_query(messages1: list[dict[str, str]], oai_api_key: str, stream: bool):
     }
 
     # Make the API request
-    response = requests.post(
-        url, headers=headers, data=json.dumps(payload), stream=stream
-    )
+    response = requests.post(url, headers=headers, data=json.dumps(payload), stream=stream)
 
     if stream:
         response1 = parse_1_query_stream(response)
@@ -339,9 +331,7 @@ def do_generation(query1: str, keep_texts: list[dict], oai_api_key: str, stream:
     return response
 
 
-def calc_cost(
-    prompt_tokens: int, completion_tokens: int, embedding_tokens: int
-) -> float:
+def calc_cost(prompt_tokens: int, completion_tokens: int, embedding_tokens: int) -> float:
     """
     Calculate the cost in cents based on the number of prompt, completion, and embedding tokens.
 
@@ -366,7 +356,6 @@ def do_rag(user_input: str, oai_api_key: str, stream: bool = False, n_results: i
     # Load the data
     talk_ids, embeds, talk_info = import_data()
     # Load the model
-
 
     retrieved_docs = do_retrieval(
         query0=user_input,
