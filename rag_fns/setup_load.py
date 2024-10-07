@@ -42,7 +42,7 @@ def import_data() -> tuple[list[str], np.ndarray, dict[str, Any]]:
         data2load = pickle.load(f)
 
     talk_ids = data2load["talk_ids"]
-    embeds = data2load["all_embeds"]
+    embeds = data2load["embeds"]
     talk_info = data2load["talk_info"]
 
     return talk_ids, embeds, talk_info

@@ -87,7 +87,7 @@ Address the response to me directly.  Do not use any information not explicitly 
 
 
 # @traceable(reduce_fn=concatenate_strings)
-def do_1_query(messages1: list[dict[str, str]], gen_client: OpenAI) -> Stream:
+def do_1_query(messages1: list[dict[str, str]], gen_client: OpenAI, stream: bool = False):
     """
     Generate a response using the specified chat completion model.
 
@@ -103,15 +103,24 @@ def do_1_query(messages1: list[dict[str, str]], gen_client: OpenAI) -> Stream:
 
     # Generate the response using the specified model
     response1 = gen_client.chat.completions.create(
-        messages=messages1, model=model1, seed=18, temperature=0, stream=True
+        messages=messages1, model=model1, seed=18, temperature=0, stream=stream
     )
 
     return response1
 
+def text_from_response_static(response1) -> str:
+    return response1.choices[0].message.content
+
+def text_from_response_stream(response1: Stream):
+    for chunk in response1:
+        content = chunk.choices[0].delta.content
+        if content is not None:
+            yield content
+
 
 def do_generation(
     query1: str, keep_texts: list[dict[str, Any]], gen_client: OpenAI
-) -> tuple[Any, int]:
+, stream: bool = False):
     """
     Generate the chatbot response using the specified generation client.
 
@@ -125,6 +134,11 @@ def do_generation(
     """
     user_prompt = make_user_prompt(query1, keep_texts=keep_texts)
     messages1, prompt_tokens = set_messages(SYSTEM_PROMPT, user_prompt)
-    response = do_1_query(messages1, gen_client)
+    response = do_1_query(messages1, gen_client, stream=stream)
 
-    return response, prompt_tokens
+    if stream:
+        response1 = text_from_response_stream(response1=response)
+    else:
+        response1 = text_from_response_static(response1=response)
+
+    return response1, prompt_tokens
