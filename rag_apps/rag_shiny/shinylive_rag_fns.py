@@ -1,6 +1,6 @@
 import json
 import pickle
-import os
+import io
 
 import numpy as np
 import requests
@@ -13,25 +13,15 @@ def import_data() -> tuple[list[str], np.ndarray, dict]:
     Returns:
         tuple[list[str], np.ndarray, dict]: A tuple containing the talks IDs, embeddings, and talk info.
     """
-    # current_directory = os.getcwd()
-    # target_filename = "embeds_talks_dcr.pkl"
-    
-    # # Search for the app directory starting with "app_"
-    # for item in os.listdir(current_directory):
-    #     if item.startswith("app_") and os.path.isdir(os.path.join(current_directory, item)):
-    #         app_directory = os.path.join(current_directory, item)
-    #         break
-    # else:
-    #     raise FileNotFoundError("No directory starting with 'app_' found.")
 
-    # # Search for the target file in the found directory
-    # target_filepath = os.path.join(app_directory, target_filename)
-    # if not os.path.isfile(target_filepath):
-    #     raise FileNotFoundError(f"'{target_filename}' not found in '{app_directory}'.")
-    target_filepath = "/Users/alanfeder/Documents/talks/dcr-3-frameworks/data/interim/embeds_talks_dcr.pkl"
-    # Load the data from the file
-    with open(target_filepath, "rb") as f:
-        data2load = pickle.load(f)
+    target_file_url = "https://github.com/AlanFeder/dcr-multi-frameworks/raw/refs/heads/main/data/interim/embeds_talks_dcr.pkl"
+
+    response = requests.get(target_file_url)
+    response.raise_for_status()  # Ensure we got a successful response
+
+    # Load the .pkl file into a Python object
+    data2load = pickle.load(io.BytesIO(response.content))
+
 
     talk_ids = data2load["talk_ids"]
     embeds = data2load["embeds"]
