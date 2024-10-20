@@ -15,13 +15,9 @@ def gr_ch_if(user_input: str, history):
 
 
 with gr.Blocks() as demo:
-    chatbot = gr.Chatbot(
-        placeholder="Use Gradio to Run RAG on the previous R/Gov Talks - Chat Interface 1"
-    )
-    chatbot.like(None, None, None)
+
     gr.ChatInterface(
         fn=gr_ch_if,
-        chatbot=chatbot,
         type='messages',
         title="Use Gradio to Run RAG on the previous R/Gov Talks - Chat Interface 1",
     )
