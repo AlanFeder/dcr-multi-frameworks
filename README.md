@@ -59,3 +59,25 @@ Comparison of Multiple Frammeworks
 
 --------
 
+
+
+## Audited dependencies
+
+Use Python 3.11 or 3.12. `requirements.in` contains the application dependencies
+and security minimums; `requirements.txt` pins the complete resolved graph.
+NumPy 1.26, pandas 2.x, and patched PyArrow 23.x keep the included data compatible.
+
+```sh
+pip install -r requirements.txt
+python -m pip check
+python -P -m unittest discover -s tests -v
+uv pip compile requirements.in --python-version 3.11 --universal --upgrade --no-annotate --output-file requirements.txt
+```
+
+The compatibility tests exercise the committed data, Parquet, and app startup
+without external API calls. CI runs them on both supported Python versions and
+audits every locked package with pip-audit. It does not deploy the app.
+
+Set `OPENAI_API_KEY` in your environment for the RAG app. The tests use a dummy
+key and disable SDK HTTP requests. The old requirements snapshot now delegates
+to the maintained dependency graph; Gradio and Shiny are included explicitly.
