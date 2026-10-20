@@ -1,10 +1,2 @@
-black
-flake8
-isort
-loguru
-mkdocs
-pip
-python-dotenv
-tqdm
-typer
--e .
+# Use the maintained application dependency graph.
+-r requirements.txt
