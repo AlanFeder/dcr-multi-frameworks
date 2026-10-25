@@ -2,10 +2,11 @@
 numpy>=1.26.4,<2
 pandas>=2.2.3,<3
 pyprojroot>=0.3.0,<0.4
-streamlit>=1.55.0,<1.56
+streamlit>=1.66.0,<2
 anyio>=4.14.2
 GitPython>=3.1.62
 idna>=3.15
+# Gradio currently requires Pillow <13; Pillow 13 security fixes are blocked upstream.
 pillow>=12.3.0,<13
 protobuf>=5.29.6
 pyarrow>=23.0.1,<24
