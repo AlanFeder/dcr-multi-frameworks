@@ -32,6 +32,7 @@ class CompatibilityTests(unittest.TestCase):
 
     def test_app_starts_without_external_credentials(self):
         with patch.dict(os.environ, {"OPENAI_API_KEY": "offline-test-placeholder"}), \
+                patch("httpx2.Client.send", side_effect=AssertionError("API calls are disabled in this test")), \
                 patch("httpx.Client.send", side_effect=AssertionError("API calls are disabled in this test")):
             app = AppTest.from_file(str(ROOT / ENTRYPOINT)).run(timeout=30)
         self.assertEqual([], [error.message for error in app.exception])

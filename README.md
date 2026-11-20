@@ -65,13 +65,15 @@ Comparison of Multiple Frammeworks
 
 Use Python 3.11 or 3.12. `requirements.in` contains the application dependencies
 and security minimums; `requirements.txt` pins the complete resolved graph.
-NumPy 1.26, pandas 2.x, and patched PyArrow 23.x keep the included data compatible.
+The app uses NumPy 2, pandas 3, PyArrow 26, and OpenAI SDK 3. The universal lock
+selects NumPy 2.4 on Python 3.11 and newer NumPy releases on Python 3.12+.
+Compatibility tests verify that the committed data still loads.
 
 ```sh
 pip install -r requirements.txt
 python -m pip check
 python -P -m unittest discover -s tests -v
-uv pip compile requirements.in --python-version 3.11 --universal --upgrade --no-annotate --output-file requirements.txt
+uv pip compile requirements.in --python-version 3.11.5 --universal --upgrade --no-annotate --output-file requirements.txt
 ```
 
 The compatibility tests exercise the committed data, Parquet, and app startup

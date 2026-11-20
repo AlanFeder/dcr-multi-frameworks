@@ -17,7 +17,7 @@ def make_oai_client() -> OpenAI:
     Returns:
         OpenAI: An OpenAI client.
     """
-    oai_client = OpenAI(os.getenv("OPENAI_API_KEY"))
+    oai_client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
     return oai_client
 
